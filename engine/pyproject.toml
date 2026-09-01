@@ -1,0 +1,6 @@
+[project]
+name = "rotoless-engine"
+version = "0.1.0"
+description = "SAM 2.1 (MLX) segmentation backend for the Resolve Rotoless bridge"
+requires-python = ">=3.14"
+dependencies = ["mlx-sam", "numpy", "pillow"]

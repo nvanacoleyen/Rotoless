@@ -1,0 +1,7 @@
+# uv-managed engine venv — recreated by ./install.sh (uv sync)
+engine/.venv/
+
+__pycache__/
+*.py[cod]
+
+.DS_Store
