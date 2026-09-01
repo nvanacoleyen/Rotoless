@@ -13,6 +13,7 @@ the case on a stock macOS + Homebrew setup. Fusion embeds its own Lua, so this
 runs with nothing installed.
 --]]
 
+local VERSION     = "0.1.0"
 local ENGINE_DIR  = "__ENGINE_DIR__"
 local OUTPUT_ROOT = os.getenv("HOME") .. "/Movies/Rotoless"
 local SEC_PER_FRAME = 0.42   -- measured on an M4 Air, sam2.1-hiera-small
@@ -97,16 +98,17 @@ local function run()
   local name     = basename_noext(path)
   local outDir   = OUTPUT_ROOT .. "/" .. name .. "_" .. os.date("%Y%m%d_%H%M%S")
 
+  log("Rotoless " .. VERSION)
   log("clip     : " .. name)
   log("range    : frames " .. srcStart .. "-" .. srcEnd .. " (" .. count .. " frames)")
   log("estimate : about " .. math.floor(count * SEC_PER_FRAME) .. "s of inference")
 
   local python = ENGINE_DIR .. "/.venv/bin/python"
-  local probe = io.open(python, "r")
-  if probe == nil then
+  local venvProbe = io.open(python, "r")
+  if venvProbe == nil then
     return fail("engine venv missing at " .. python .. " -- run install.sh first.")
   end
-  probe:close()
+  venvProbe:close()
 
   local cmd = table.concat({
     "cd", q(ENGINE_DIR), "&&", q(python), "-m", "rotoless.cli",
@@ -119,10 +121,10 @@ local function run()
   -- second run by accident is easy -- and two concurrent runs double the GPU
   -- and memory pressure, which on a 16 GB machine is enough to drive the
   -- system into swap. Refuse rather than let that happen.
-  local probe = io.popen("pgrep -f 'rotoless\\.cli' 2>/dev/null")
-  if probe then
-    local running = (probe:read("*a") or ""):gsub("%s+", " "):gsub("^%s*(.-)%s*$", "%1")
-    probe:close()
+  local running_probe = io.popen("pgrep -f 'rotoless\\.cli' 2>/dev/null")
+  if running_probe then
+    local running = (running_probe:read("*a") or ""):gsub("%s+", " "):gsub("^%s*(.-)%s*$", "%1")
+    running_probe:close()
     if running ~= "" then
       return fail("a Rotoless run is already in progress (pid " .. running ..
                   "). Let it finish, or quit it, before starting another.")

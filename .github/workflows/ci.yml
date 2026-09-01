@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    # The engine needs Apple Silicon, but everything worth testing in CI --
+    # the Lua parse, the track-placement helpers and the engine/Lua wire
+    # contract -- is pure logic that runs anywhere.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install lupa
+        run: pip install --quiet lupa
+
+      - name: Lua parse + track placement + wire-contract tests
+        run: python tests/test_placement.py
+
+      - name: Installer syntax
+        run: bash -n install.sh

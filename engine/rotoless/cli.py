@@ -9,6 +9,7 @@ from pathlib import Path
 
 from rotoless import guard
 from rotoless.segment import DEFAULT_MODEL, ObjectPrompt, segment_clip
+from rotoless.summary import build_summary
 
 
 def _point(value: str) -> tuple[float, float, int, int]:
@@ -123,23 +124,8 @@ def main(argv: list[str] | None = None) -> int:
             session.stop(linger=20)
         raise
 
-    # Key order matters: the Lua side pattern-matches this rather than parsing
-    # JSON, so obj_id/frames/dir/first must stay in this order.
-    objects = [
-        OrderedDict((("obj_id", obj_id),
-                     ("frames", len(paths)),
-                     ("dir", str(args.out / f"object_{obj_id}")),
-                     ("first", str(paths[0]) if paths else None)))
-        for obj_id, paths in sorted(written.items())
-    ]
-    frames = max((o["frames"] for o in objects), default=0)
-    summary = OrderedDict((
-        ("objects", objects),
-        ("frames", frames),
-        ("out_dir", str(args.out)),
-        ("pattern", "cutout_%06d.png"),
-        ("peak_rss_gb", round(guard.current_rss_bytes() / 1024**3, 2)),
-    ))
+    summary = build_summary(written, args.out)
+    frames = summary["frames"]
 
     if session is not None:
         session.finish(True)

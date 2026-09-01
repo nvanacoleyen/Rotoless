@@ -37,14 +37,11 @@ echo "==> installing Rotoless.lua"
 # '|' as the sed delimiter because the path contains '/'.
 sed "s|__ENGINE_DIR__|$ENGINE_DIR|g" "$ROOT/resolve_script/Rotoless.lua" > "$DEST/Rotoless.lua"
 
-# Resolve only lists .py scripts when a Python.framework exists in
-# /Library/Frameworks. Leaving a dead .py behind is just confusing.
-rm -f "$DEST/Rotoless.py"
-
-# The tool was called MagicMatte before v0.2. An installed copy of the old
-# script still appears under Workspace > Scripts and now fails on launch --
-# it invokes magic_matte.cli, a module this repo no longer ships.
-rm -f "$DEST/MagicMatte.lua" "$DEST/MagicMatte.py"
+# Clear anything an earlier version installed. Two entries under
+# Workspace > Scripts is confusing, and the old ones now fail on launch:
+# MagicMatte.lua invokes magic_matte.cli, a module this repo no longer ships,
+# and the .py variants were a superseded prototype.
+rm -f "$DEST/Rotoless.py" "$DEST/MagicMatte.lua" "$DEST/MagicMatte.py"
 
 echo
 echo "Installed to: $DEST/Rotoless.lua"
