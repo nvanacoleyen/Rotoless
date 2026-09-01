@@ -1,6 +1,6 @@
 # Rotoless
 
-[![CI](https://github.com/nvanacoleyen/rotoless/actions/workflows/ci.yml/badge.svg)](https://github.com/nvanacoleyen/rotoless/actions/workflows/ci.yml)
+[![CI](https://github.com/nvanacoleyen/Rotoless/actions/workflows/ci.yml/badge.svg)](https://github.com/nvanacoleyen/Rotoless/actions/workflows/ci.yml)
 
 AI subject masking for **DaVinci Resolve free edition** — an alternative to
 Studio's Magic Mask, using SAM 2.1 running natively on Apple Silicon via MLX.
@@ -30,7 +30,7 @@ You do **not** need a system Python for Resolve's sake — see
 ## Install
 
 ```bash
-git clone https://github.com/nvanacoleyen/rotoless.git
+git clone https://github.com/nvanacoleyen/Rotoless.git
 ```
 
 ```bash

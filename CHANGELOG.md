@@ -38,4 +38,4 @@ First public release. Working end to end on real footage.
 - `install.sh` removes any `MagicMatte.lua` / `MagicMatte.py` left in Resolve's
   Scripts folder by a pre-release install, since those now fail on launch.
 
-[0.1.0]: https://github.com/nvanacoleyen/rotoless/releases/tag/v0.1.0
+[0.1.0]: https://github.com/nvanacoleyen/Rotoless/releases/tag/v0.1.0
